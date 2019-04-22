@@ -207,6 +207,13 @@ To fill the "IK_server.py" I used the "Kinematics Project Walkthrough" youtube v
 Additional comments are in "IK_server.py" code.
 Observed that in some cases the WC do some unotimized moviments like turn 2 times the WC before go to basket. 
 
+Github links that helped me too in this task:
+
+https://github.com/Vicuko/RoboND-KinematicsProject/blob/master/writeup.md
+https://github.com/mkhuthir/RoboND-Kinematics-Project
+https://github.com/NitishPuri/RoboND-Kinematics-Project
+
+
 ![alt text][gazebo01]
 ![alt text][gazebo02]
 ![alt text][gazebo03]
