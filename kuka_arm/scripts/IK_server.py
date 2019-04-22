@@ -125,7 +125,7 @@ def handle_calculate_IK(req):
         ROT_EE = ROT_z * ROT_y * ROT_x
 
         # Apply correct to EE
-        # 180º in Z axis and -90º in Y axis to match gripper with DH parameters.
+        # 180deg in Z axis and -90deg in Y axis to match gripper with DH parameters.
 
         Rot_Error = ROT_z.subs(y, radians(180)) * ROT_y.subs(p, radians(-90))
 
