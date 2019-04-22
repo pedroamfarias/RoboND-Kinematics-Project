@@ -44,10 +44,10 @@ def handle_calculate_IK(req):
 
 	# Define Modified DH Transformation matrix
     def TF_Mat(alpha, a, d, q):
-    TF = Matrix([[            cos(q),           -sin(q),           0,             a],
-                 [ sin(q)*cos(alpha), cos(q)*cos(alpha), -sin(alpha), -sin(alpha)*d],
-                 [ sin(q)*sin(alpha), cos(q)*sin(alpha),  cos(alpha),  cos(alpha)*d],
-                 [                 0,                 0,           0,             1]])
+        TF = Matrix([[            cos(q),           -sin(q),           0,             a],
+                    [ sin(q)*cos(alpha), cos(q)*cos(alpha), -sin(alpha), -sin(alpha)*d],
+                    [ sin(q)*sin(alpha), cos(q)*sin(alpha),  cos(alpha),  cos(alpha)*d],
+                    [                 0,                 0,           0,             1]])
     return TF
 	# Create individual transformation matrices
 	#
