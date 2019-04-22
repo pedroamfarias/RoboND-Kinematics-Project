@@ -117,7 +117,7 @@ def handle_calculate_IK(req):
                     [       0,       1,       0 ],
                     [ -sin(p),       0,  cos(p) ]])
 
-        ROT_Z = Matrix([[ cos(y), -sin(y),       0],
+        ROT_z = Matrix([[ cos(y), -sin(y),       0],
                     [   sin(y),  cos(y),       0 ],
                     [        0,       0,       1 ]])                  
 
@@ -125,7 +125,7 @@ def handle_calculate_IK(req):
 
         # Apply correct to EE
 
-        Rot_Error = ROT_Z.subs(y, radians(180)) * ROT_y.subs(p, radians(-90))
+        Rot_Error = ROT_z.subs(y, radians(180)) * ROT_y.subs(p, radians(-90))
 
         ROT_EE = ROT_EE * Rot_Error
         ROT_EE = ROT_EE.subs({'r': roll, 'p': pitch, 'y': yaw})
