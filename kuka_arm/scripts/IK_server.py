@@ -51,13 +51,13 @@ def handle_calculate_IK(req):
         return TF
 	# Create individual transformation matrices
 	#
-    T0_1 = TF_Mat(alpha0, a0, d1, q1).subs(dh)
-    T1_2 = TF_Mat(alpha1, a1, d2, q2).subs(dh)
-    T2_3 = TF_Mat(alpha2, a2, d3, q3).subs(dh)
-    T3_4 = TF_Mat(alpha3, a3, d4, q4).subs(dh)
-    T4_5 = TF_Mat(alpha4, a4, d5, q5).subs(dh)
-    T5_6 = TF_Mat(alpha5, a5, d6, q6).subs(dh)
-    T6_EE = TF_Mat(alpha6, a6, d7, q7).subs(dh)
+    T0_1 = TF_Mat(alpha0, a0, d1, q1).subs(DH_Table)
+    T1_2 = TF_Mat(alpha1, a1, d2, q2).subs(DH_Table)
+    T2_3 = TF_Mat(alpha2, a2, d3, q3).subs(DH_Table)
+    T3_4 = TF_Mat(alpha3, a3, d4, q4).subs(DH_Table)
+    T4_5 = TF_Mat(alpha4, a4, d5, q5).subs(DH_Table)
+    T5_6 = TF_Mat(alpha5, a5, d6, q6).subs(DH_Table)
+    T6_EE = TF_Mat(alpha6, a6, d7, q7).subs(DH_Table)
 
     # Composition of all transforms:
 
