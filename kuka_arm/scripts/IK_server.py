@@ -66,13 +66,13 @@ def handle_calculate_IK(req):
 
     # As a difference between Gripper T6_EE in URDF and DH parameter, it's need to rotate around Z and Y frame:
     # Rotation Matrices in Z and Y 
-    R_y = Matrix([[ cos(-np.pi/2),           0, sin(-np.pi/2), 0],
+    R_y = Matrix([[ cos(-pi/2),           0, sin(-pi/2), 0],
                 [             0,           1,             0, 0],
-                [-sin(-np.pi/2),           0, cos(-np.pi/2), 0],
+                [-sin(-pi/2),           0, cos(-pi/2), 0],
                 [             0,           0,             0, 1]])
 
-    R_z = Matrix([[    cos(np.pi), -sin(np.pi),             0, 0],
-                [    sin(np.pi),  cos(np.pi),             0, 0],
+    R_z = Matrix([[    cos(pi), -sin(pi),             0, 0],
+                [    sin(pi),  cos(pi),             0, 0],
                 [             0,           0,             1, 0],
                 [             0,           0,             0, 1]])
 
