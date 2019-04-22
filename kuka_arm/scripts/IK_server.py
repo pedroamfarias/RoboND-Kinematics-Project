@@ -77,6 +77,7 @@ def handle_calculate_IK(req):
                 [             0,           0,             0, 1]])
 
 
+    # Apply the correction because of URDF vs DH
     R_corr = (R_z * R_y)
 
     T_total= (T0_EE * R_corr)
@@ -106,7 +107,7 @@ def handle_calculate_IK(req):
         ### Your IK code here
     # Compensate for rotation discrepancy between DH parameters and Gazebo
     #
-        # Rotation Matrices:
+        # Rotation Matrices to correct Gripper in URDF vs DH Convention.
         r, p, y = symbols('r p y')
 
         ROT_x = Matrix([[     1,       0,       0],
@@ -124,18 +125,26 @@ def handle_calculate_IK(req):
         ROT_EE = ROT_z * ROT_y * ROT_x
 
         # Apply correct to EE
+        # 180º in Z axis and -90º in Y axis to match gripper with DH parameters.
 
         Rot_Error = ROT_z.subs(y, radians(180)) * ROT_y.subs(p, radians(-90))
 
         ROT_EE = ROT_EE * Rot_Error
         ROT_EE = ROT_EE.subs({'r': roll, 'p': pitch, 'y': yaw})
 
+        #Get EE cartesian position in matrix
         EE = Matrix([[px],
                     [py],
                     [pz]])
+
+        # Get wrist center from corrected EE 
         WC = EE - (0.303) * ROT_EE[:,2]
-    # Calculate joint angles using Geometric IK method
-    #
+
+
+        # Calculate joint angles using Geometric IK method
+        # as help: https://www.youtube.com/watch?time_continue=1&v=o9HDo3I0arE
+        # and https://www.youtube.com/watch?v=Gt8DRm-REt4
+        #
         theta1 = atan2(WC[1],WC[0])
 
         side_a = 1.501

@@ -19,6 +19,11 @@
 
 [forward_kinematics_demo]: ./misc_images/forward_kinematics_DEMO.PNG
 [forward_kinematics_DH-table]: ./misc_images/forward_kinematics_DH-table.PNG
+[gazebo01]: ./misc_images/gazebo01.PNG
+[gazebo02]: ./misc_images/gazebo02.PNG
+[gazebo03]: ./misc_images/gazebo03.PNG
+[gazebo04]: ./misc_images/gazebo04.PNG
+[gazebo05]: ./misc_images/gazebo05.PNG
 [image2]: ./misc_images/misc3.png
 [image3]: ./misc_images/misc2.png
 
@@ -118,7 +123,7 @@ R_z = Matrix([[    cos(np.pi), -sin(np.pi),             0, 0],
               [             0,           0,             1, 0],
               [             0,           0,             0, 1]])
 
-
+# Apply the correction because of URDF vs DH
 R_corr = (R_z * R_y)
 
 T_total= (T0_EE * R_corr)
@@ -130,7 +135,7 @@ T_total= (T0_EE * R_corr)
 ![alt text][image2]
 
 ```python
-    # Rotation Matrices:
+    # Rotation Matrices to correct Gripper in URDF vs DH Convention.
     r, p, y = symbols('r p y')
 
     ROT_x = Matrix([[     1,       0,       0],
@@ -148,19 +153,25 @@ T_total= (T0_EE * R_corr)
     ROT_EE = ROT_z * ROT_y * ROT_x
 
     # Apply correct to EE
+    # 180º in Z axis and -90º in Y axis to match gripper with DH parameters.
 
     Rot_Error = ROT_Z.subs(y, radians(180)) * ROT_y.subs(p, radians(-90))
 
     ROT_EE = ROT_EE * Rot_Error
     ROT_EE = ROT_EE.subs({'r': roll, 'p': pitch, 'y': yaw})
 
+    #Get EE cartesian position in matrix
     EE = Matrix([[px],
                  [py],
                  [pz]])
+
+    # Get wrist center from corrected EE          
     WC = EE - (0.303) * ROT_EE[:,2]
 
 
     # Calculate joint angles using Geometric IK method
+    # as help: https://www.youtube.com/watch?time_continue=1&v=o9HDo3I0arE
+    # and https://www.youtube.com/watch?v=Gt8DRm-REt4
 
     theta1 = atan2(WC[1],WC[0])
 
@@ -192,10 +203,16 @@ T_total= (T0_EE * R_corr)
 #### 1. Fill in the `IK_server.py` file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results. 
 
 
-Here I'll talk about the code, what techniques I used, what worked and why, where the implementation might fail and how I might improve it if I were going to pursue this project further.  
+To fill the "IK_server.py" I used the "Kinematics Project Walkthrough" youtube video to help me. 
+Additional comments are in "IK_server.py" code.
+Observed that in some cases the WC do some unotimized moviments like turn 2 times the WC before go to basket. 
+
+![alt text][gazebo01]
+![alt text][gazebo02]
+![alt text][gazebo03]
+![alt text][gazebo04]
+![alt text][gazebo05]
 
 
-And just for fun, another example image:
-![alt text][image3]
 
 
