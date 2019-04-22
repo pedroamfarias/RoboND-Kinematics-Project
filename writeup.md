@@ -107,6 +107,29 @@ and Composition of all transforms:
 As a difference between Gripper T6_EE in URDF and DH parameter, it's need to rotate around Z and Y frame:
 
 ```python
+    # Rotation Matrices in Z and Y
+R_y = Matrix([[ cos(-np.pi/2),           0, sin(-np.pi/2), 0],
+              [             0,           1,             0, 0],
+              [-sin(-np.pi/2),           0, cos(-np.pi/2), 0],
+              [             0,           0,             0, 1]])
+
+R_z = Matrix([[    cos(np.pi), -sin(np.pi),             0, 0],
+              [    sin(np.pi),  cos(np.pi),             0, 0],
+              [             0,           0,             1, 0],
+              [             0,           0,             0, 1]])
+
+
+R_corr = (R_z * R_y)
+
+T_total= (T0_EE * R_corr)
+
+```
+
+#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
+
+![alt text][image2]
+
+```python
     # Rotation Matrices:
     r, p, y = symbols('r p y')
 
@@ -129,22 +152,40 @@ As a difference between Gripper T6_EE in URDF and DH parameter, it's need to rot
     Rot_Error = ROT_Z.subs(y, radians(180)) * ROT_y.subs(p, radians(-90))
 
     ROT_EE = ROT_EE * Rot_Error
-    ROT_EE = ROT_EE.subs('{r': roll, 'p': pitch, 'y': yaw})
+    ROT_EE = ROT_EE.subs({'r': roll, 'p': pitch, 'y': yaw})
 
     EE = Matrix([[px],
                  [py],
                  [pz]])
     WC = EE - (0.303) * ROT_EE[:,2]
 
+
+    # Calculate joint angles using Geometric IK method
+
+    theta1 = atan2(WC[1],WC[0])
+
+    side_a = 1.501
+    side_b = sqrt(pow((sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - 0.35), 2) + pow((WC[2] - 0.75), 2))
+    side_c = 1.25
+
+    angle_a = acos((side_b * side_b + side_c * side_c - side_a * side_a) / (2 * side_b * side_c))
+    angle_b = acos((side_a * side_a + side_c * side_c - side_b * side_b) / (2 * side_a * side_c))
+    angle_c = acos((side_a * side_a + side_b * side_b - side_c * side_c) / (2 * side_a * side_b))
+
+    theta2 = pi/2 - a - atan2(WC[2]-0.75, sqrt(WC[0]*WC[0]+WC[1]*WC[1])-0.35)
+    theta3 = pi/2 - (b+0.036)
+
+    R0_3 = T0_1[0:3,0:3] * T1_2[0:3,0:3] * T2_3[0:3,0:3]
+    R0_3 = R0_3.evalf(subs={q1: theta1, q2: theta2, q3:theta3})
+
+    R3_6 = R0_3.transpose() * ROT_EE
+
+    theta4 = atan2(R3_6[2,2], -R3_6[0,2])
+    theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
+    theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+
 ```
 
-
-
-#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
-
-And here's where you can draw out and show your math for the derivation of your theta angles. 
-
-![alt text][image2]
 
 ### Project Implementation
 
