@@ -209,9 +209,9 @@ Observed that in some cases the WC do some unotimized moviments like turn 2 time
 
 Github links that helped me too in this task:
 
-https://github.com/Vicuko/RoboND-KinematicsProject/blob/master/writeup.md
-https://github.com/mkhuthir/RoboND-Kinematics-Project
-https://github.com/NitishPuri/RoboND-Kinematics-Project
+    https://github.com/Vicuko/RoboND-KinematicsProject/blob/master/writeup.md
+    https://github.com/mkhuthir/RoboND-Kinematics-Project
+    https://github.com/NitishPuri/RoboND-Kinematics-Project
 
 
 ![alt text][gazebo01]
